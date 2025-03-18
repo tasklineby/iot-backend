@@ -1,8 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
+import { RoleJwtGuard } from 'src/auth/guards/role.guard';
 
+@UseGuards(RoleJwtGuard)
 @Controller('rooms')
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
@@ -17,9 +28,9 @@ export class RoomsController {
     return this.roomsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.roomsService.findOne(+id);
+  @Get(':company')
+  findOne(@Param('company') id: string) {
+    return this.roomsService.findOne({ companyId: +id });
   }
 
   @Patch(':id')
