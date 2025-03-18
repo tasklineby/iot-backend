@@ -16,4 +16,7 @@ export class DetectorDto extends DetectorEntity {
 
   @IsString()
   currentMetricsUnit: string;
+
+  @IsNumber()
+  roomId: number;
 }

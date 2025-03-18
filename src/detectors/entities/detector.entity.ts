@@ -26,6 +26,9 @@ export class DetectorEntity extends BaseEntity {
   @Column()
   currentMetricsUnit: string;
 
+  @Column()
+  roomId: number;
+
   @ManyToOne(() => RoomEntity, (room) => room.detectors)
   room: RoomEntity;
 
