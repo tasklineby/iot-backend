@@ -4,7 +4,8 @@ import { UpdateMetricDto } from './dto/update-metric.dto';
 import { MetricsEntity } from './entities/metric.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BadRequestException } from '@nestjs/common';
-import { Repository, FindOptionsWhere } from 'typeorm';
+import { Repository, FindOptionsWhere, LessThan } from 'typeorm';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class MetricsService {
@@ -40,5 +41,15 @@ export class MetricsService {
 
   async remove(id: number) {
     return await this.metricsRepository.delete(id);
+  }
+
+  @Cron('* * * 1 * *')
+  async clearExpiredMetrics() {
+    const expired = new Date();
+    expired.setDate(expired.getDate() - 30);
+
+    await this.metricsRepository.delete({
+      timestamp: LessThan(expired),
+    });
   }
 }
