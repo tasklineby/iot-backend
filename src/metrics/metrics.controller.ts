@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { MetricsService } from './metrics.service';
 import { CreateMetricDto } from './dto/create-metric.dto';
 import { UpdateMetricDto } from './dto/update-metric.dto';
@@ -19,7 +27,7 @@ export class MetricsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.metricsService.findOne(+id);
+    return this.metricsService.findOne({ id: +id });
   }
 
   @Patch(':id')

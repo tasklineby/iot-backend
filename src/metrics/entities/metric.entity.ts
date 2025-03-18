@@ -18,7 +18,7 @@ export class MetricsEntity extends BaseEntity {
   @Column()
   value: number;
 
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   timestamp: Date;
 
   @Column()

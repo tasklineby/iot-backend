@@ -1,4 +1,4 @@
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
 import { MetricsEntity } from '../entities/metric.entity';
 
 export class MetricsDto extends MetricsEntity {
@@ -11,7 +11,7 @@ export class MetricsDto extends MetricsEntity {
   @IsNumber()
   value: number;
 
-  @IsDate()
+  @IsDateString()
   timestamp: Date;
 
   @IsString()

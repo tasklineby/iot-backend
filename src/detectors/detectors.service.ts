@@ -10,24 +10,24 @@ import { BadRequestException } from '@nestjs/common';
 export class DetectorsService {
   constructor(
     @InjectRepository(DetectorEntity)
-    private readonly companiesRepository: Repository<DetectorEntity>,
+    private readonly detectorsRepository: Repository<DetectorEntity>,
   ) {}
 
   async create(detector: CreateDetectorDto) {
     try {
-      this.companiesRepository.create(detector);
-      return await this.companiesRepository.save(detector);
+      this.detectorsRepository.create(detector);
+      return await this.detectorsRepository.save(detector);
     } catch (err) {
       throw new BadRequestException('Invalid credentials');
     }
   }
 
   async findAll() {
-    return await this.companiesRepository.find();
+    return await this.detectorsRepository.find();
   }
 
   async findOne(where: FindOptionsWhere<DetectorEntity>) {
-    const queryBuilder = this.companiesRepository
+    const queryBuilder = this.detectorsRepository
       .createQueryBuilder('company')
       .where(where);
 
@@ -35,10 +35,10 @@ export class DetectorsService {
   }
 
   async update(id: number, updateDetectorDto: UpdateDetectorDto) {
-    return await this.companiesRepository.update(id, updateDetectorDto);
+    return await this.detectorsRepository.update(id, updateDetectorDto);
   }
 
   async remove(id: number) {
-    return await this.companiesRepository.delete(id);
+    return await this.detectorsRepository.delete(id);
   }
 }
