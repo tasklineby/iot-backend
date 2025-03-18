@@ -5,6 +5,7 @@ import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { UnauthorizedException } from '@nestjs/common';
 import { Response } from 'express';
+import { TokenPayload } from './token-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -15,8 +16,7 @@ export class AuthService {
 
   async signUp(user: CreateUserDto, response: Response) {
     user.password = await bcrypt.hash(user.password, 10);
-    const userEntity = await this.usersService.create(user);
-    return await this.signIn(user.email, user.password, response);
+    return await this.usersService.create(user);
   }
 
   async signIn(email: string, password: string, response: Response) {
@@ -30,11 +30,16 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const tokenPayload = { sub: user.id };
+    const tokenPayload: TokenPayload = {
+      sub: user.id,
+      isMaster: user.isMaster,
+    };
     const accessToken = await this.jwtService.signAsync(tokenPayload);
 
     response.cookie('Authentication', accessToken, {
       httpOnly: true,
     });
+
+    return user;
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,8 +13,12 @@ export class UsersService {
   ) {}
 
   async create(user: CreateUserDto) {
-    this.userRepository.create(user);
-    return await this.userRepository.save(user);
+    try {
+      this.userRepository.create(user);
+      return await this.userRepository.save(user);
+    } catch (err) {
+      throw new BadRequestException('Invalid credentials');
+    }
   }
 
   async findAll() {

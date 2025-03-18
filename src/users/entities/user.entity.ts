@@ -8,7 +8,7 @@ export class UserEntity extends BaseEntity {
   @Column({ nullable: false })
   companyCode: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   email: string;
 
   @Column({ nullable: false })
@@ -16,4 +16,7 @@ export class UserEntity extends BaseEntity {
 
   @Column({ nullable: false })
   password: string;
+
+  @Column({ nullable: false, default: false })
+  isMaster: boolean;
 }
