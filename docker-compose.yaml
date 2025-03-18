@@ -39,8 +39,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      mongodb:
-        condition: service_healthy
+      # mongodb:
+      #   condition: service_healthy
     develop:
       watch:
         - action: rebuild
@@ -51,4 +51,4 @@ services:
 
 volumes:
   pg_data:
-  mongodb_data:
+  # mongodb_data:
