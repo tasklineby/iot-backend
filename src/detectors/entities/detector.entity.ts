@@ -29,6 +29,12 @@ export class DetectorEntity extends BaseEntity {
   @Column()
   roomId: number;
 
+  @Column({ nullable: true })
+  minValue: number;
+
+  @Column({ nullable: true })
+  maxValue: number;
+
   @ManyToOne(() => RoomEntity, (room) => room.detectors)
   room: RoomEntity;
 

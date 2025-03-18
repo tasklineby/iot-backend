@@ -6,11 +6,15 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
+  UseGuards,
 } from '@nestjs/common';
 import { DetectorsService } from './detectors.service';
 import { CreateDetectorDto } from './dto/create-detector.dto';
 import { UpdateDetectorDto } from './dto/update-detector.dto';
+import { RoleJwtGuard } from 'src/auth/guards/role.guard';
 
+@UseGuards(RoleJwtGuard)
 @Controller('detectors')
 export class DetectorsController {
   constructor(private readonly detectorsService: DetectorsService) {}
@@ -28,6 +32,14 @@ export class DetectorsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.detectorsService.findOne({ id: +id });
+  }
+
+  @Put(':id/extremes')
+  setExtremes(
+    @Param('id') id: string,
+    @Body() extremes: { maxValue: number; minValue: number },
+  ) {
+    return this.detectorsService.setExtremes(+id, extremes);
   }
 
   @Patch(':id')

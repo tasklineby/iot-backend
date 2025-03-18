@@ -19,4 +19,10 @@ export class DetectorDto extends DetectorEntity {
 
   @IsNumber()
   roomId: number;
+
+  @IsNumber()
+  minValue: number;
+
+  @IsNumber()
+  maxValue: number;
 }

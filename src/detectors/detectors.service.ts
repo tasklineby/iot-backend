@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { CreateDetectorDto } from './dto/create-detector.dto';
 import { UpdateDetectorDto } from './dto/update-detector.dto';
 import { DetectorEntity } from './entities/detector.entity';
@@ -32,6 +32,13 @@ export class DetectorsService {
       .where(where);
 
     return await queryBuilder.getOne();
+  }
+
+  async setExtremes(
+    id: number,
+    extremes: { maxValue: number; minValue: number },
+  ) {
+    return await this.detectorsRepository.update(id, extremes);
   }
 
   async update(id: number, updateDetectorDto: UpdateDetectorDto) {
