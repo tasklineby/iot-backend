@@ -5,8 +5,8 @@ export class UserDto extends UserEntity {
   @IsNumber()
   id: number;
 
-  @IsString()
-  companyCode: string;
+  @IsNumber()
+  companyId: number;
 
   @IsEmail()
   email: string;
