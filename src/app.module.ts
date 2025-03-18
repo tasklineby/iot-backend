@@ -4,6 +4,9 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CompaniesModule } from './companies/companies.module';
+import { RoomsModule } from './rooms/rooms.module';
+import { DetectorsModule } from './detectors/detectors.module';
 
 @Module({
   imports: [
@@ -39,6 +42,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
+    CompaniesModule,
+    RoomsModule,
+    DetectorsModule,
   ],
   controllers: [],
   providers: [],

@@ -4,18 +4,26 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';
+import { CompaniesService } from 'src/companies/companies.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly companiesService: CompaniesService,
   ) {}
 
   async create(user: CreateUserDto) {
     try {
       this.userRepository.create(user);
-      return await this.userRepository.save(user);
+      const userEntity = await this.userRepository.save(user);
+      if (userEntity.isMaster) {
+        this.companiesService.update(userEntity.companyId, {
+          masterId: userEntity.id,
+        });
+        return userEntity;
+      }
     } catch (err) {
       throw new BadRequestException('Invalid credentials');
     }
