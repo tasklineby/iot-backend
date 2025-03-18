@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CompaniesModule } from './companies/companies.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { DetectorsModule } from './detectors/detectors.module';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
   imports: [
@@ -19,9 +20,8 @@ import { DetectorsModule } from './detectors/detectors.module';
         POSTGRES_DB: Joi.string(),
         POSTGRES_PORT: Joi.number().default(5432),
         POSTGRES_HOST: Joi.string().hostname(),
-        JWT_ACCESS_SECRET: Joi.string(),
-        JWT_REFRESH_SECRET: Joi.string(),
-        MONGO_URL: Joi.string(),
+        JWT_SECRET: Joi.string(),
+        API_KEY: Joi.string(),
       }),
       validationOptions: {
         allowUnknown: true,
@@ -45,6 +45,7 @@ import { DetectorsModule } from './detectors/detectors.module';
     CompaniesModule,
     RoomsModule,
     DetectorsModule,
+    MetricsModule,
   ],
   controllers: [],
   providers: [],

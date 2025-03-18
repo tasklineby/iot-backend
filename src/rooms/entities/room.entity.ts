@@ -1,9 +1,17 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { CompanyEntity } from 'src/companies/entities/company.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
+import { DetectorEntity } from 'src/detectors/entities/detector.entity';
 
 @Entity({ name: 'rooms' })
-export class RoomEntity {
+export class RoomEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -21,4 +29,7 @@ export class RoomEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.rooms)
   owner: UserEntity;
+
+  @OneToMany(() => DetectorEntity, (detector) => detector.room)
+  detectors: DetectorEntity[];
 }

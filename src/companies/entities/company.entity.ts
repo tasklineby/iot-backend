@@ -1,9 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  BaseEntity,
+} from 'typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { RoomEntity } from 'src/rooms/entities/room.entity';
 
 @Entity({ name: 'companies' })
-export class CompanyEntity {
+export class CompanyEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
