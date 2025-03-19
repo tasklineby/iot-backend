@@ -25,9 +25,9 @@ export class CompaniesController {
     return this.companiesService.findAll();
   }
 
-  @Get(':id')
-  getId(@Param('id') id: string) {
-    return this.companiesService.findOne({ id: +id });
+  @Get(':code')
+  getId(@Param('code') code: string) {
+    return this.companiesService.findOne({ code: code });
   }
 
   @Patch(':id')
