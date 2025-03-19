@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,6 +13,7 @@ export class UsersService {
     private readonly userRepository: Repository<UserEntity>,
     private readonly companiesService: CompaniesService,
   ) {}
+  private readonly logger = new Logger(UsersService.name);
 
   async create(user: CreateUserDto) {
     try {
@@ -25,6 +26,7 @@ export class UsersService {
         return userEntity;
       }
     } catch (err) {
+      this.logger.error('Invalid credentials');
       throw new BadRequestException('Invalid credentials');
     }
   }

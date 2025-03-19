@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { RoomEntity } from './entities/room.entity';
@@ -13,11 +13,13 @@ export class RoomsService {
     private readonly companiesRepository: Repository<RoomEntity>,
   ) {}
 
+  private readonly logger = new Logger(RoomsService.name);
   async create(room: CreateRoomDto) {
     try {
       this.companiesRepository.create(room);
       return await this.companiesRepository.save(room);
     } catch (err) {
+      this.logger.error('Invalid input');
       throw new BadRequestException('Invalid input');
     }
   }

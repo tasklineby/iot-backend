@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { CompanyEntity } from './entities/company.entity';
@@ -13,11 +13,14 @@ export class CompaniesService {
     private readonly companiesRepository: Repository<CompanyEntity>,
   ) {}
 
+  private readonly logger = new Logger(CompaniesService.name);
+
   async create(company: CreateCompanyDto) {
     try {
       this.companiesRepository.create(company);
       return await this.companiesRepository.save(company);
     } catch (err) {
+      this.logger.error('Invalid input');
       throw new BadRequestException('Invalid input');
     }
   }

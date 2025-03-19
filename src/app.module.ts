@@ -12,6 +12,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-yet';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -68,6 +69,16 @@ import { APP_GUARD } from '@nestjs/core';
           limit: 10,
         },
       ],
+    }),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: {
+          target: 'pino-pretty',
+          options: {
+            singleLine: true,
+          },
+        },
+      },
     }),
     CompaniesModule,
     RoomsModule,

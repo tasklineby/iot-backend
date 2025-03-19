@@ -3,7 +3,7 @@ import { CreateMetricDto } from './dto/create-metric.dto';
 import { UpdateMetricDto } from './dto/update-metric.dto';
 import { MetricsEntity } from './entities/metric.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, Logger } from '@nestjs/common';
 import { Repository, FindOptionsWhere, LessThan } from 'typeorm';
 import { Cron } from '@nestjs/schedule';
 
@@ -14,11 +14,14 @@ export class MetricsService {
     private readonly metricsRepository: Repository<MetricsEntity>,
   ) {}
 
+  private readonly logger = new Logger(MetricsService.name);
+
   async create(metrics: CreateMetricDto) {
     try {
       this.metricsRepository.create(metrics);
       return await this.metricsRepository.save(metrics);
     } catch (err) {
+      this.logger.error('Invalid input');
       throw new BadRequestException('Invalid input');
     }
   }

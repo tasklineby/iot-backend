@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, Logger } from '@nestjs/common';
 import { CreateDetectorDto } from './dto/create-detector.dto';
 import { UpdateDetectorDto } from './dto/update-detector.dto';
 import { DetectorEntity } from './entities/detector.entity';
@@ -22,11 +22,14 @@ export class DetectorsService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
+  private readonly logger = new Logger(DetectorsService.name);
+
   async create(detector: CreateDetectorDto) {
     try {
       this.detectorsRepository.create(detector);
       return await this.detectorsRepository.save(detector);
     } catch (err) {
+      this.logger.error('invalid input');
       throw new BadRequestException('Invalid input');
     }
   }

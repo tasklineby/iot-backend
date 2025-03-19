@@ -28,8 +28,6 @@ export class GeminiAIService {
       parameters,
     );
 
-    console.log(prompt);
-
     const result = await this.metricsModel.generateContent(prompt);
 
     return JSON.parse(result.response.text());
