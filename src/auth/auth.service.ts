@@ -14,12 +14,12 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signUp(user: CreateUserDto, response: Response) {
+  async signUp(user: CreateUserDto) {
     user.password = await bcrypt.hash(user.password, 10);
     return await this.usersService.create(user);
   }
 
-  async signIn(email: string, password: string, response: Response) {
+  async signIn(email: string, password: string) {
     const user = await this.usersService.findOne({ email: email }, true);
     if (!user) {
       throw new UnauthorizedException();
@@ -35,12 +35,8 @@ export class AuthService {
       isMaster: user.isMaster,
       companyId: user.companyId,
     };
-    const accessToken = await this.jwtService.signAsync(tokenPayload);
-
-    response.cookie('Authentication', accessToken, {
-      httpOnly: true,
-    });
-
-    return user;
+    return {
+      accessToken: await this.jwtService.signAsync(tokenPayload),
+    };
   }
 }

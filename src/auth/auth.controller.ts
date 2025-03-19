@@ -10,22 +10,12 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
-  signUp(
-    @Body() signUpDto: SignUpDto,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    return this.authService.signUp(signUpDto, response);
+  signUp(@Body() signUpDto: SignUpDto) {
+    return this.authService.signUp(signUpDto);
   }
 
   @Post('signin')
-  signIn(
-    @Body() signInDto: SignInDto,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    return this.authService.signIn(
-      signInDto.email,
-      signInDto.password,
-      response,
-    );
+  signIn(@Body() signInDto: SignInDto) {
+    return this.authService.signIn(signInDto.email, signInDto.password);
   }
 }
