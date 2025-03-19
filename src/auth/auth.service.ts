@@ -4,7 +4,7 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { UnauthorizedException } from '@nestjs/common';
-import { TokenPayload } from './interfaces/token-payload.interface';
+import { TokenPayload } from '../constants/token-payload.interface';
 
 @Injectable()
 export class AuthService {
