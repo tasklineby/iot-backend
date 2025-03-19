@@ -18,7 +18,7 @@ export class CompaniesService {
       this.companiesRepository.create(company);
       return await this.companiesRepository.save(company);
     } catch (err) {
-      throw new BadRequestException('Invalid credentials');
+      throw new BadRequestException('Invalid input');
     }
   }
 

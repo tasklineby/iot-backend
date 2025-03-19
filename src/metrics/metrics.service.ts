@@ -19,7 +19,7 @@ export class MetricsService {
       this.metricsRepository.create(metrics);
       return await this.metricsRepository.save(metrics);
     } catch (err) {
-      throw new BadRequestException('Invalid credentials');
+      throw new BadRequestException('Invalid input');
     }
   }
 

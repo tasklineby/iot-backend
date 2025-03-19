@@ -18,7 +18,7 @@ export class RoomsService {
       this.companiesRepository.create(room);
       return await this.companiesRepository.save(room);
     } catch (err) {
-      throw new BadRequestException('Invalid credentials');
+      throw new BadRequestException('Invalid input');
     }
   }
 

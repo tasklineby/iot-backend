@@ -27,7 +27,7 @@ export class DetectorsService {
       this.detectorsRepository.create(detector);
       return await this.detectorsRepository.save(detector);
     } catch (err) {
-      throw new BadRequestException('Invalid credentials');
+      throw new BadRequestException('Invalid input');
     }
   }
 
