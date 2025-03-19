@@ -159,3 +159,7 @@ export interface MetricsAnalyticsParameters extends DetectorEntity {}
 export interface CompanyMetricsParameters {
   parameters: MetricsAnalyticsParameters[];
 }
+
+export const REDIS_ANALYTICS_PREFIX = 'analytics';
+export const REDIS_KEY_DELIMITER = ':';
+export const REDIS_METRICS_PREFIX = 'metrics';

@@ -8,6 +8,8 @@ import { CompaniesModule } from './companies/companies.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { DetectorsModule } from './detectors/detectors.module';
 import { MetricsModule } from './metrics/metrics.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-yet';
 
 @Module({
   imports: [
@@ -15,13 +17,16 @@ import { MetricsModule } from './metrics/metrics.module';
     AuthModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
-        POSTGRES_USER: Joi.string(),
-        POSTGRES_PASSWORD: Joi.string(),
-        POSTGRES_DB: Joi.string(),
-        POSTGRES_PORT: Joi.number().default(5432),
-        POSTGRES_HOST: Joi.string().hostname(),
-        JWT_SECRET: Joi.string(),
-        API_KEY: Joi.string(),
+        POSTGRES_USER: Joi.string().required(),
+        POSTGRES_PASSWORD: Joi.string().required(),
+        POSTGRES_DB: Joi.string().required(),
+        POSTGRES_PORT: Joi.number().port().required(),
+        POSTGRES_HOST: Joi.string().hostname().required(),
+        JWT_SECRET: Joi.string().required(),
+        GEMINI_API_KEY: Joi.string().required(),
+        GEMINI_MODEL: Joi.string().required(),
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PORT: Joi.number().port().required(),
       }),
       validationOptions: {
         allowUnknown: true,
@@ -39,6 +44,18 @@ import { MetricsModule } from './metrics/metrics.module';
         database: configService.getOrThrow<string>('POSTGRES_DB'),
         autoLoadEntities: true,
         synchronize: true,
+      }),
+      inject: [ConfigService],
+    }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async (configService: ConfigService) => ({
+        store: await redisStore({
+          socket: {
+            host: configService.getOrThrow<string>('REDIS_HOST'),
+            port: configService.getOrThrow<number>('REDIS_PORT'),
+          },
+        }),
       }),
       inject: [ConfigService],
     }),
