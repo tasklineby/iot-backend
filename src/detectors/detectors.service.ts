@@ -5,12 +5,15 @@ import { DetectorEntity } from './entities/detector.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsWhere } from 'typeorm';
 import { BadRequestException } from '@nestjs/common';
+import { GeminiAIService } from 'src/ai-data-processor/gemini-ai.service';
+import { MetricsAnalyticsParameters } from 'src/constants/constants';
 
 @Injectable()
 export class DetectorsService {
   constructor(
     @InjectRepository(DetectorEntity)
     private readonly detectorsRepository: Repository<DetectorEntity>,
+    private readonly geminiAIService: GeminiAIService,
   ) {}
 
   async create(detector: CreateDetectorDto) {
@@ -39,6 +42,22 @@ export class DetectorsService {
     extremes: { maxValue: number; minValue: number },
   ) {
     return await this.detectorsRepository.update(id, extremes);
+  }
+
+  async getMetricsAnalytics(id: number) {
+    const queryBuilder = await this.detectorsRepository
+      .createQueryBuilder('detector')
+      .leftJoinAndSelect('detector.metrics', 'metrics')
+      .where('detector.id = :id', { id: id })
+      .getMany();
+    const promptParameters: MetricsAnalyticsParameters = {
+      parameters: queryBuilder,
+    };
+
+    return {
+      analysis:
+        await this.geminiAIService.generateMetricsAnalytics(promptParameters),
+    };
   }
 
   async update(id: number, updateDetectorDto: UpdateDetectorDto) {

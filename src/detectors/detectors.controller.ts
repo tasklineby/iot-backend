@@ -29,6 +29,11 @@ export class DetectorsController {
     return this.detectorsService.findAll();
   }
 
+  @Get(':id/analytics')
+  getMetricsAnalytics(@Param('id') id: string) {
+    return this.detectorsService.getMetricsAnalytics(+id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.detectorsService.findOne({ id: +id });
