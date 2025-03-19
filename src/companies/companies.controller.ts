@@ -13,7 +13,6 @@ import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { RoleJwtGuard } from 'src/auth/guards/role.guard';
 
-@UseGuards(RoleJwtGuard)
 @Controller('companies')
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {}
