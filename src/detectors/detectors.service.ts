@@ -45,19 +45,26 @@ export class DetectorsService {
   }
 
   async getMetricsAnalytics(id: number) {
+    const queryBuilder = this.getMetrics(id);
+    let promptParameters;
+    if (queryBuilder !== null) {
+      promptParameters = queryBuilder;
+    }
+    return {
+      detector: promptParameters,
+      analysis:
+        await this.geminiAIService.generateMetricsAnalytics(promptParameters),
+    };
+  }
+
+  async getMetrics(id: number) {
     const queryBuilder = await this.detectorsRepository
       .createQueryBuilder('detector')
       .leftJoinAndSelect('detector.metrics', 'metrics')
       .where('detector.id = :id', { id: id })
-      .getMany();
-    const promptParameters: MetricsAnalyticsParameters = {
-      parameters: queryBuilder,
-    };
+      .getOne();
 
-    return {
-      analysis:
-        await this.geminiAIService.generateMetricsAnalytics(promptParameters),
-    };
+    return queryBuilder;
   }
 
   async update(id: number, updateDetectorDto: UpdateDetectorDto) {
@@ -66,5 +73,16 @@ export class DetectorsService {
 
   async remove(id: number) {
     return await this.detectorsRepository.delete(id);
+  }
+
+  async getDetectors(companyId: number) {
+    const queryBuilder = await this.detectorsRepository
+      .createQueryBuilder('detector')
+      .leftJoinAndSelect('detector.metrics', 'metrics')
+      .where('detector.companyId = :id', { id: companyId })
+      .getMany();
+
+    if (queryBuilder) return queryBuilder;
+    else throw new BadRequestException('No detectors in this company');
   }
 }
