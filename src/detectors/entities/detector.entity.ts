@@ -8,6 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { MetricsEntity } from 'src/metrics/entities/metric.entity';
+import { CompanyEntity } from 'src/companies/entities/company.entity';
 
 @Entity({ name: 'detectors' })
 export class DetectorEntity extends BaseEntity {
@@ -29,6 +30,9 @@ export class DetectorEntity extends BaseEntity {
   @Column()
   roomId: number;
 
+  @Column()
+  companyId: number;
+
   @Column({ nullable: true })
   minValue: number;
 
@@ -40,4 +44,7 @@ export class DetectorEntity extends BaseEntity {
 
   @OneToMany(() => MetricsEntity, (metric) => metric.detector)
   metrics: MetricsEntity[];
+
+  @ManyToOne(() => CompanyEntity, (company) => company.detectors)
+  company: CompanyEntity;
 }

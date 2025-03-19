@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { RoomEntity } from 'src/rooms/entities/room.entity';
+import { DetectorEntity } from 'src/detectors/entities/detector.entity';
 
 @Entity({ name: 'companies' })
 export class CompanyEntity extends BaseEntity {
@@ -27,4 +28,7 @@ export class CompanyEntity extends BaseEntity {
 
   @OneToMany(() => RoomEntity, (room) => room.company)
   rooms: RoomEntity[];
+
+  @OneToMany(() => DetectorEntity, (detector) => detector.company)
+  detectors: DetectorEntity[];
 }

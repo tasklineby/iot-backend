@@ -154,6 +154,8 @@ export const metricsAnalyticsSchema: Schema = {
   required: ['sensorAnalysis'],
 };
 
-export interface MetricsAnalyticsParameters {
-  parameters: DetectorEntity[];
+export interface MetricsAnalyticsParameters extends DetectorEntity {}
+
+export interface CompanyMetricsParameters {
+  parameters: MetricsAnalyticsParameters[];
 }

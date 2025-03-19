@@ -21,6 +21,9 @@ export class DetectorDto extends DetectorEntity {
   roomId: number;
 
   @IsNumber()
+  companyId: number;
+
+  @IsNumber()
   minValue: number;
 
   @IsNumber()
